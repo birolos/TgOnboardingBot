@@ -1,4 +1,5 @@
 import logging
+import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 import asyncio
 
