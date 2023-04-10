@@ -2,19 +2,21 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 import asyncio
 from aiogram.utils.exceptions import BotBlocked
+
 import aiogram.utils.markdown as fmt
 
 
 bot = Bot(token="5854619199:AAFO2U5yfHrOm6_9wBZTfudLf_4dgkGizoM")   # Объект бота
 dp = Dispatcher(bot)    # Диспетчер для бота
 logging.basicConfig(level=logging.INFO)     # Включаем логирование, чтобы не пропустить важные сообщения
-
+link = "https://sun1-86.userapi.com/impg/MXEUzx2_M5OB-VpY2A_d4uzPi0tDR37QW06UTg/UQbgMS-cy1U.jpg?size=1278x1080&quality=95&sign=d563a4a8badbe3cc89cce20572f6558a&type=album"
 @dp.message_handler(commands="start")
 async def start_comms(message: types.Message):
-    await message.reply("Тестовые команды:\n/test1\n/test2\ntest4\n/block\n/answer\n/reply\n/dice")
+    await message.reply("Тестовые команды:\n/test1\n/test2\n/test4\n/block\n/answer\n/reply\n/dice")
+
 @dp.message_handler(commands="test1")
 async def cmd_test1(message: types.Message):
-    await message.reply("Test *1*\ ", parse_mode="MarkdovnV2")
+    await message.reply("Hello, *world*\!", parse_mode="MarkdownV2")
 
 @dp.message_handler(commands="test2")
 async def cmd_test2(message: types.Message):
@@ -68,25 +70,37 @@ async def cmd_dice(message: types.Message):
 # async def cmd_dice(message: types.Message):
 #     await message.bot.send_dice(-100123456789, emoji="🎲")
 
-@dp.message_handler()
-async def any_text_message2(message: types.Message):
-    await message.answer(f"Привет, <b>{fmt.quote_html(message.text)}</b>", parse_mode=types.ParseMode.HTML)
-    # А можно и так:
-    await message.answer(fmt.text("Привет,", fmt.hbold(message.text)), parse_mode=types.ParseMode.HTML)
+# @dp.message_handler()
+# async def any_text_message2(message: types.Message):
+#     await message.answer(f"Привет, <b>{fmt.quote_html(message.text)}</b>", parse_mode=types.ParseMode.HTML)
+#     # А можно и так:
+#     await message.answer(fmt.text("Привет,", fmt.hbold(message.text)), parse_mode=types.ParseMode.HTML)
 
 @dp.message_handler(content_types=[types.ContentType.ANIMATION])
 async def echo_document(message: types.Message):
     await message.reply_animation(message.animation.file_id)
 
-import aiogram.utils.markdown as fmt
-
 @dp.message_handler(commands="test4")
 async def with_hidden_link(message: types.Message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["С пюрешкой", "Без пюрешки"]
+    keyboard.add(*buttons)
     await message.answer(
-        f"{fmt.hide_link('https://sun1-86.userapi.com/impg/MXEUzx2_M5OB-VpY2A_d4uzPi0tDR37QW06UTg/UQbgMS-cy1U.jpg?size=1278x1080&quality=95&sign=d563a4a8badbe3cc89cce20572f6558a&type=album')}Паблик джесси пинкман:",
+        f"{fmt.hide_link(link)}Паблик Джесси Пинкмант Интерпрайзед представляет:\n"
         f"-Say my name\n-Heisenberg\n-You are god damn right",
         parse_mode=types.ParseMode.HTML)
 
+
+@dp.message_handler(text="С пюрешкой")
+async def with_puree(message: types.Message):
+    await message.reply("Отличный выбор!"),
+    reply_markup = types.ReplyKeyboardRemove()
+
+
+@dp.message_handler(text="Без пюрешки")
+async def without_puree(message: types.Message):
+    await message.reply("Так невкусно!"),
+    reply_markup = types.ReplyKeyboardRemove()
 
 if __name__ == "__main__":
     # Запуск бота
