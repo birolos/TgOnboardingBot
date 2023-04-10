@@ -2,7 +2,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 import asyncio
 from aiogram.utils.exceptions import BotBlocked
-
+from random import randint
 import aiogram.utils.markdown as fmt
 
 
@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)     # Включаем логирова�
 link = "https://sun1-86.userapi.com/impg/MXEUzx2_M5OB-VpY2A_d4uzPi0tDR37QW06UTg/UQbgMS-cy1U.jpg?size=1278x1080&quality=95&sign=d563a4a8badbe3cc89cce20572f6558a&type=album"
 @dp.message_handler(commands="start")
 async def start_comms(message: types.Message):
-    await message.reply("Тестовые команды:\n/test1\n/test2\n/test4\n/block\n/answer\n/reply\n/dice")
+    await message.reply("Тестовые команды:\n/test1\n/test2\n/test4\n/block\n/answer\n/reply\n/dice\n/inline_url\n/random")
 
 @dp.message_handler(commands="test1")
 async def cmd_test1(message: types.Message):
@@ -82,12 +82,12 @@ async def echo_document(message: types.Message):
 
 @dp.message_handler(commands="test4")
 async def with_hidden_link(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)
     buttons = ["С пюрешкой", "Без пюрешки"]
     keyboard.add(*buttons)
     await message.answer(
         f"{fmt.hide_link(link)}Паблик Джесси Пинкмант Интерпрайзед представляет:\n"
-        f"-Say my name\n-Heisenberg\n-You are god damn right",
+        f"-Say my name\n-Heisenberg\n-You are god damn right", reply_markup=keyboard,
         parse_mode=types.ParseMode.HTML)
 
 
@@ -101,6 +101,27 @@ async def with_puree(message: types.Message):
 async def without_puree(message: types.Message):
     await message.reply("Так невкусно!"),
     reply_markup = types.ReplyKeyboardRemove()
+
+@dp.message_handler(commands="inline_url")
+async def cmd_inline_url(message: types.Message):
+    buttons = [
+        types.InlineKeyboardButton(text="GitHub", url="https://github.com"),
+        types.InlineKeyboardButton(text="Оф. канал Telegram", url="tg://resolve?domain=telegram")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)  # Если нужно в ряд, row_widht = 3
+    keyboard.add(*buttons)
+    await message.answer("Кнопки-ссылки", reply_markup=keyboard)
+
+@dp.message_handler(commands="random")
+async def cmd_random(message: types.Message):
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton(text="Нажми меня", callback_data="random_value"))
+    await message.answer("Нажмите на кнопку, чтобы бот отправил число от 1 до 10", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="random_value")
+async def send_random_value(call: types.CallbackQuery):
+    await call.message.answer(str(randint(1, 10)),
+    await call.answer(text="Спасибо, что воспользовались ботом!", show_alert=True))     # Строка чтобы около кнопки не было маленьких часиков
 
 if __name__ == "__main__":
     # Запуск бота
