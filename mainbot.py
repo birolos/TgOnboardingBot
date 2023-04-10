@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)     # Включаем логирова�
 
 @dp.message_handler(commands="start")
 async def start_comms(message: types.Message):
-    await message.reply("Тестовые команды:\n")
+    await message.reply("Тестовые команды:\n/test1\n/test2\ntest4\n/block\n/answer\n/reply\n/dice")
 @dp.message_handler(commands="test1")
 async def cmd_test1(message: types.Message):
     await message.reply("Test *1*\ ", parse_mode="MarkdovnV2")
@@ -32,15 +32,15 @@ async def cmd_block(message: types.Message):
     await asyncio.sleep(10.0)  # Здоровый сон на 10 секунд
     await message.reply("Вы заблокированы")
 
-@dp.message_handler()
-async def any_text_message(message: types.Message):
-    await message.answer(message.text)
-    await message.answer(message.md_text)
-    await message.answer(message.html_text)
-    # Дополняем исходный текст:
-    await message.answer(
-        f"<u>Ваш текст</u>:\n\n{message.html_text}", parse_mode="HTML"
-    )
+# @dp.message_handler()
+# async def any_text_message(message: types.Message):
+#     await message.answer(message.text)
+#     await message.answer(message.md_text)
+#     await message.answer(message.html_text)
+#     # Дополняем исходный текст:
+#     await message.answer(
+#         f"<u>Ваш текст</u>:\n\n{message.html_text}", parse_mode="HTML"
+#     )
 
 @dp.errors_handler(exception=BotBlocked)
 async def error_bot_blocked(update: types.Update, exception: BotBlocked):
