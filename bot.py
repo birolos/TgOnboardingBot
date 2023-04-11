@@ -16,38 +16,70 @@ floor = 0
 @dp.message_handler(commands="start")
 async def start_comms(message: types.Message):
     buttons = [
-        types.InlineKeyboardButton(text="-1", callback_data="-1"),
-        types.InlineKeyboardButton(text="+1", callback_data="+1"),
-        types.InlineKeyboardButton(text="Подтвердить", callback_data="num_finish0")
+        types.InlineKeyboardButton(text="Информация о нас", callback_data="mainInfo"),
+        types.InlineKeyboardButton(text="Продукты компании", callback_data="goods"),
+        types.InlineKeyboardButton(text="Сотрудники и Контакты", callback_data="Contacts"),
+        types.InlineKeyboardButton(text="Обучение должности", callback_data="job_feats")
     ]
-    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await message.answer("Добро пожаловать в Nerv! ", reply_markup=keyboard)
+    await message.answer("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
 
-@dp.callback_query_handler(text="+1")
-async def text_plus1(call: types.CallbackQuery, floor=floor):
-    floor = 1
+@dp.callback_query_handler(text="back")
+async def start_comms(message: types.Message):
     buttons = [
-        types.InlineKeyboardButton(text="-1", callback_data="-1.1"),
-        types.InlineKeyboardButton(text="+1", callback_data="+1.1"),
-        types.InlineKeyboardButton(text="Подтвердить", callback_data="num_finish1")
+        types.InlineKeyboardButton(text="Информация о нас", callback_data="mainInfo"),
+        types.InlineKeyboardButton(text="Продукты компании", callback_data="goods"),
+        types.InlineKeyboardButton(text="Сотрудники и Контакты", callback_data="Contacts"),
+        types.InlineKeyboardButton(text="Обучение должности", callback_data="job_feats")
     ]
-    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await call.message.answer("Этаж "+ str(floor), reply_markup=keyboard)
+    await message.edit_text("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
 
+@dp.callback_query_handler(text="mainInfo")
+async def main_info(call: types.CallbackQuery):
 
-@dp.callback_query_handler(text="-1")
-async def text_plus1(call: types.CallbackQuery, floor=floor):
-    floor =-1
     buttons = [
-        types.InlineKeyboardButton(text="-1", callback_data="-1.2"),
-        types.InlineKeyboardButton(text="+1", callback_data="+1.2"),
-        types.InlineKeyboardButton(text="Подтвердить", callback_data="num_finish2")
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
     ]
-    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await call.message.answer("Этаж "+ str(floor), reply_markup=keyboard)
+    await call.message.answer("ВВЕДИТЕ ИНФОРМАЦИЮ О КОМПАНИИ", reply_markup=keyboard)
+
+
+@dp.callback_query_handler(text="goods")
+async def main_goods(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Далее", callback_data="Good1"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
+    ]
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(*buttons)
+    await call.message.answer("ВВЕСТИ ИНФ О ЕВА00", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="Good1")
+async  def goods1(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Далее", callback_data="Good2"),
+        types.InlineKeyboardButton(text="Назад", callback_data="Good1"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
+    ]
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(*buttons)
+    await call.message.answer("ВВЕСТИ ИНФ О ЕВА01", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="Good2")
+async  def goods1(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Далее", callback_data="Good3"),
+        types.InlineKeyboardButton(text="Назад", callback_data="Good2"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
+    ]
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(*buttons)
+    await call.message.answer("ВВЕСТИ ИНФ О ЕВА04", reply_markup=keyboard)
+
 
 
 # @dp.callback_query_handler(text="+1.1")
