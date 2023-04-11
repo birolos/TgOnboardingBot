@@ -265,8 +265,5 @@ async def jobfeats(call: types.CallbackQuery):
 # async def callbacks_lvl(call: types.CallbackQuery):
 
 
-
-
 if __name__ == "__main__":
-    # Запуск бота
     executor.start_polling(dp, skip_updates=True)
