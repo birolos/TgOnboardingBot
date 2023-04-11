@@ -1,36 +1,24 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
-import asyncio
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputFile, CallbackQuery, InputMedia
-from aiogram.utils.exceptions import BotBlocked
-from random import randint
-import aiogram.utils.markdown as fmt
-import sqlite3
-from sqlite3 import Error
+# import asyncio
+# from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputFile, CallbackQuery, InputMedia
+# from aiogram.utils.exceptions import BotBlocked
+# from random import randint
+# import aiogram.utils.markdown as fmt
+# import sqlite3
+# from sqlite3 import Error
 
-bot = Bot(token="5854619199:AAFO2U5yfHrOm6_9wBZTfudLf_4dgkGizoM")  # Объект бота
-dp = Dispatcher(bot)  # Диспетчер для бота
-logging.basicConfig(level=logging.INFO)  # Включаем логирование, чтобы не пропустить важные сообщения
+bot = Bot(token="5854619199:AAFO2U5yfHrOm6_9wBZTfudLf_4dgkGizoM")
+dp = Dispatcher(bot)
+logging.basicConfig(level=logging.INFO)
 floor = 0
 
 @dp.message_handler(commands="start")
 async def start_comms(message: types.Message):
     buttons = [
-        types.InlineKeyboardButton(text="Информация о нас", callback_data="mainInfo"),
-        types.InlineKeyboardButton(text="Продукты компании", callback_data="goods"),
-        types.InlineKeyboardButton(text="Сотрудники и Контакты", callback_data="Contacts"),
-        types.InlineKeyboardButton(text="Обучение должности", callback_data="job_feats")
-    ]
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(*buttons)
-    await message.answer("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
-
-@dp.callback_query_handler(text="back")
-async def start_comms(message: types.Message):
-    buttons = [
-        types.InlineKeyboardButton(text="Информация о нас", callback_data="mainInfo"),
-        types.InlineKeyboardButton(text="Продукты компании", callback_data="goods"),
-        types.InlineKeyboardButton(text="Сотрудники и Контакты", callback_data="Contacts"),
+        types.InlineKeyboardButton(text="О нас", callback_data="mainInfo"),
+        types.InlineKeyboardButton(text="Продукты", callback_data="goods"),
+        types.InlineKeyboardButton(text="Сотрудники", callback_data="employees"),
         types.InlineKeyboardButton(text="Обучение должности", callback_data="job_feats")
     ]
     keyboard = types.InlineKeyboardMarkup()
@@ -45,7 +33,22 @@ async def main_info(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await call.message.answer("ВВЕДИТЕ ИНФОРМАЦИЮ О КОМПАНИИ", reply_markup=keyboard)
+    await call.message.edit_text("ВВЕДИТЕ ИНФОРМАЦИЮ О КОМПАНИИ", reply_markup=keyboard)
+
+
+@dp.callback_query_handler(text="back")
+async def start_comms(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="О нас", callback_data="mainInfo"),
+        types.InlineKeyboardButton(text="Продукты", callback_data="goods"),
+        types.InlineKeyboardButton(text="Сотрудники", callback_data="employees"),
+        types.InlineKeyboardButton(text="Обучение должности", callback_data="job_feats")
+    ]
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(*buttons)
+    await call.message.edit_text("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
+
+
 
 
 @dp.callback_query_handler(text="goods")
@@ -54,33 +57,108 @@ async def main_goods(call: types.CallbackQuery):
         types.InlineKeyboardButton(text="Далее", callback_data="Good1"),
         types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
     ]
-    keyboard = types.InlineKeyboardMarkup()
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
-    await call.message.answer("ВВЕСТИ ИНФ О ЕВА00", reply_markup=keyboard)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА00", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="Good1")
-async  def goods1(call: types.CallbackQuery):
+async def goods1(call: types.CallbackQuery):
     buttons = [
+        types.InlineKeyboardButton(text="Назад", callback_data="goods"),
         types.InlineKeyboardButton(text="Далее", callback_data="Good2"),
-        types.InlineKeyboardButton(text="Назад", callback_data="Good1"),
         types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
     ]
-    keyboard = types.InlineKeyboardMarkup()
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.answer("ВВЕСТИ ИНФ О ЕВА01", reply_markup=keyboard)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА01", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="Good2")
-async  def goods1(call: types.CallbackQuery):
+async def goods1(call: types.CallbackQuery):
     buttons = [
+        types.InlineKeyboardButton(text="Назад", callback_data="Good1"),
         types.InlineKeyboardButton(text="Далее", callback_data="Good3"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back"),
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА02", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="Good3")
+async def goods1(call: types.CallbackQuery):
+    buttons = [
         types.InlineKeyboardButton(text="Назад", callback_data="Good2"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back"),
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА04", reply_markup=keyboard)
+
+
+#
+#
+
+@dp.callback_query_handler(text="employees")
+async def main_goods(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Далее", callback_data="empl1"),
         types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ГЕНДО", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="empl1")
+async def goods1(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Назад", callback_data="employees"),
+        types.InlineKeyboardButton(text="Далее", callback_data="empl2"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О МИСАТО", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="empl2")
+async def goods1(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Назад", callback_data="empl1"),
+        types.InlineKeyboardButton(text="Далее", callback_data="empl3"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back"),
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ПОМОШНИКЕ МИСАТО", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="empl3")
+async def goods1(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Назад", callback_data="empl2"),
+        types.InlineKeyboardButton(text="Далее", callback_data="empl4"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back"),
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О РИТЦУКО", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="empl4")
+async def goods1(call: types.CallbackQuery):
+    buttons = [
+        types.InlineKeyboardButton(text="Назад", callback_data="empl3"),
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back"),
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+    await call.message.edit_text("ВВЕСТИ ИНФ О ВАШЕЙ ПРОФЕССИИ", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="job_feats")
+async def jobfeats(call: types.CallbackQuery):
+
+    buttons = [
+        types.InlineKeyboardButton(text="Вернуться в меню", callback_data="back"),
     ]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await call.message.answer("ВВЕСТИ ИНФ О ЕВА04", reply_markup=keyboard)
-
-
+    await call.message.edit_text("ВВЕСТИ ИНФ О ВАШЕЙ ПРОФЕССИИ", reply_markup=keyboard)
 
 # @dp.callback_query_handler(text="+1.1")
 # async def text_plus1(call: types.CallbackQuery, floor=floor):
