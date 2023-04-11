@@ -1,6 +1,8 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import asyncio
+
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputFile, CallbackQuery, InputMedia
 from aiogram.utils.exceptions import BotBlocked
 from random import randint
 import aiogram.utils.markdown as fmt
@@ -120,8 +122,61 @@ async def cmd_random(message: types.Message):
 
 @dp.callback_query_handler(text="random_value")
 async def send_random_value(call: types.CallbackQuery):
-    await call.message.answer(str(randint(1, 10)),
-    await call.answer(text="Спасибо, что воспользовались ботом!", show_alert=True))     # Строка чтобы около кнопки не было маленьких часиков
+    await call.message.answer(str(randint(1, 10))),
+    # await call.answer(text="Спасибо, что воспользовались ботом!", show_alert=True)     # Строка чтобы около кнопки не было маленьких часиков
+
+    @dp.message_handler(commands=["photo"])
+    async def photo(message: types.Message):
+        file_path = "files/foods/borsch.jpg"
+        reply_markup = InlineKeyboardMarkup().add(
+            InlineKeyboardButton(text="I want a new photo!", callback_data="update_photo")
+        )
+        file = InputFile(file_path)
+
+        await bot.send_photo(
+            message.chat.id,
+            photo=file,
+            reply_markup=reply_markup,
+            caption="Test caption!",
+        )
+
+    @dp.callback_query_handler(text="update_photo")
+    async def photo_update(query: CallbackQuery):
+        file_path = "files/foods/pelmeni.png"
+        reply_markup = InlineKeyboardMarkup().add(
+            InlineKeyboardButton(text="Updated button", callback_data="dont_click_me")
+        )
+        file = InputMedia(media=InputFile(file_path), caption="Updated caption :)")
+
+        await query.message.edit_media(file, reply_markup=reply_markup)
+
+
+
+
+@dp.message_handler(commands="sss")
+async def but1(message: types.Message):
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton(text="push me", callback_data="button_pushed"))
+    await message.answer("нажмите на кнопку", reply_markup=keyboard)
+
+@dp.callback_query_handler(text="button_pushed")
+async def editlastmsg(call: types.CallbackQuery):
+    await call.message.edit_text("324678")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     # Запуск бота
