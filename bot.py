@@ -35,7 +35,7 @@ async def start_comms(message: types.Message):
     ]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await message.edit_text("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
+    await message.answer("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="mainInfo")
 async def main_info(call: types.CallbackQuery):
