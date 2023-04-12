@@ -5,13 +5,26 @@ from aiogram import Bot, Dispatcher, executor, types
 # from aiogram.utils.exceptions import BotBlocked
 # from random import randint
 # import aiogram.utils.markdown as fmt
-# import sqlite3
-# from sqlite3 import Error
+import sqlite3
+from sqlite3 import Error
+
+def create_connection(path):
+    connection = None
+    try:
+        connection = sqlite3.connect(".\zxcasuka.db")
+        print("Connection to SQLite DB successful")
+    except Error as e:
+        print(f"The error '{e}' occurred")
+
+    return connection
+
+
 
 bot = Bot(token="5854619199:AAFO2U5yfHrOm6_9wBZTfudLf_4dgkGizoM")
 dp = Dispatcher(bot)
 logging.basicConfig(level=logging.INFO)
 floor = 0
+
 
 @dp.message_handler(commands="start")
 async def start_comms(message: types.Message):
