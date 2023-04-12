@@ -8,15 +8,35 @@ from aiogram import Bot, Dispatcher, executor, types
 import sqlite3
 from sqlite3 import Error
 
-def create_connection(path):
-    connection = None
-    try:
-        connection = sqlite3.connect(".\zxcasuka.db")
+conn = None
+try:
+        conn = sqlite3.connect(".\zxcasuka (1).db")
+        cursor = conn.cursor()
         print("Connection to SQLite DB successful")
-    except Error as e:
-        print(f"The error '{e}' occurred")
+        overallinf = cursor.execute(""" SELECT user_info FROM 'recrd' """)
+        overallinf = overallinf.fetchall()
+        overallname = cursor.execute("""SELECT name FROM 'recrd' """)
+        overallname = overallname.fetchall()
+        overallid = cursor.execute("""SELECT id FROM 'recrd' """)
+        overallid = overallid.fetchall()
+except Error as e:
+    print(f"The error '{e}' occurred")
 
-    return connection
+conn = None
+
+
+
+g1 = str(*overallname[5]) + f"\n\n" + str(*overallinf[5])
+g2 = str(*overallname[6]) + f"\n\n" + str(*overallinf[6])
+g3 = str(*overallname[7]) + f"\n\n" + str(*overallinf[7])
+g4 = str(*overallname[8]) + f"\n\n" + str(*overallinf[8])
+e1 = str(*overallname[0]) + f"\n\n" + str(*overallinf[0])
+e2 = str(*overallname[1]) + f"\n\n" + str(*overallinf[1])
+e3 = str(*overallname[2]) + f"\n\n" + str(*overallinf[2])
+e4 = str(*overallname[3]) + f"\n\n" + str(*overallinf[3])
+e5 = str(*overallname[4]) + f"\n\n" + str(*overallinf[4])
+
+
 
 
 
@@ -36,7 +56,7 @@ async def start_comms(message: types.Message):
     ]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await message.answer("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
+    await message.answer(f"Добро пожаловать в onboarding бота Nerv!\nВы можете ознакомиться с продукцией, вашими коллегами, общей инфорамцией о компании и дожлностными обязанностями.",parse_mode=types.ParseMode.HTML,reply_markup=keyboard)
 
 @dp.callback_query_handler(text="mainInfo")
 async def main_info(call: types.CallbackQuery):
@@ -46,7 +66,7 @@ async def main_info(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕДИТЕ ИНФОРМАЦИЮ О КОМПАНИИ", reply_markup=keyboard)
+    await call.message.edit_text(*overallinf[9], reply_markup=keyboard)
 
 
 @dp.callback_query_handler(text="back")
@@ -59,7 +79,7 @@ async def start_comms(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(*buttons)
-    await call.message.edit_text("Добро пожаловать в Nerv!; ПОЗЖЕ ЗАМЕНИТЬ НА ИНФ ИЗ БД ", reply_markup=keyboard)
+    await call.message.edit_text(f"Добро пожаловать в onboarding бота Nerv!\nВы можете ознакомиться с продукцией, вашими коллегами, общей инфорамцией о компании и дожлностными обязанностями.",parse_mode=types.ParseMode.HTML,reply_markup=keyboard)
 
 
 
@@ -72,7 +92,7 @@ async def main_goods(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА00", reply_markup=keyboard)
+    await call.message.edit_text(g1, parse_mode=types.ParseMode.HTML, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="Good1")
 async def goods1(call: types.CallbackQuery):
@@ -83,7 +103,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА01", reply_markup=keyboard)
+    await call.message.edit_text(g2, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="Good2")
 async def goods1(call: types.CallbackQuery):
@@ -94,7 +114,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА02", reply_markup=keyboard)
+    await call.message.edit_text(g3, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="Good3")
 async def goods1(call: types.CallbackQuery):
@@ -104,7 +124,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ЕВА04", reply_markup=keyboard)
+    await call.message.edit_text(g4, reply_markup=keyboard)
 
 
 #
@@ -118,7 +138,7 @@ async def main_goods(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ГЕНДО", reply_markup=keyboard)
+    await call.message.edit_text(e1, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="empl1")
 async def goods1(call: types.CallbackQuery):
@@ -129,7 +149,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О МИСАТО", reply_markup=keyboard)
+    await call.message.edit_text(e2, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="empl2")
 async def goods1(call: types.CallbackQuery):
@@ -140,7 +160,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ПОМОШНИКЕ МИСАТО", reply_markup=keyboard)
+    await call.message.edit_text(e3, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="empl3")
 async def goods1(call: types.CallbackQuery):
@@ -151,7 +171,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О РИТЦУКО", reply_markup=keyboard)
+    await call.message.edit_text(e4, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="empl4")
 async def goods1(call: types.CallbackQuery):
@@ -161,7 +181,7 @@ async def goods1(call: types.CallbackQuery):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
-    await call.message.edit_text("ВВЕСТИ ИНФ О ВАШЕЙ ПРОФЕССИИ", reply_markup=keyboard)
+    await call.message.edit_text(e5, reply_markup=keyboard)
 
 @dp.callback_query_handler(text="job_feats")
 async def jobfeats(call: types.CallbackQuery):
