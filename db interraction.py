@@ -1,7 +1,7 @@
 
 import sqlite3
 try:
-    conn = sqlite3.connect("zxcasuka (1).db ")
+    conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     cursor.execute('''DELETE FROM recrd''')
     cursor.execute("""INSERT INTO recrd VALUES (0101, "Гендо Икраи", "Директор и главное представительное лицо Nerv. Очень закрытый человек, имеющий большие планы")""")
