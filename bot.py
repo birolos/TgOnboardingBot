@@ -9,7 +9,7 @@ from sqlite3 import Error
 
 conn = None
 try:
-        conn = sqlite3.connect(".\zxcasuka (1).db")
+        conn = sqlite3.connect(".\database.db")
         cursor = conn.cursor()
         print("Connection to SQLite DB successful")#подключение к бд
         overallinf = cursor.execute(""" SELECT user_info FROM 'recrd' """) #получение информации из каждой строки бд для дальнейшего использования
